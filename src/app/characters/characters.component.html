@@ -1,0 +1,4 @@
+<div class="m-4" [hidden]="!testData">
+  <ak-data-grid [columns]="columnDefinition" [data]="testData" (doubleClick)="characterSelected($event)"></ak-data-grid>
+  <ngb-pagination class="d-flex justify-content-end" [collectionSize]="dataSize" [(page)]="currentPage"></ngb-pagination>
+</div>

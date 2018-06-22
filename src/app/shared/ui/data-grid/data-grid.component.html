@@ -1,0 +1,12 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columns">{{column}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let character of data" (dblclick)="onDoubleClick(character)" (click)="onClick(character)" [class.table-success]="character === activeCharacter">
+      <th *ngFor="let column of columns">{{character[column]}}</th>
+    </tr>
+  </tbody>
+</table>
