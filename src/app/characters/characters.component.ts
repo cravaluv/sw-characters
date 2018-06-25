@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CharacterService } from '../core/character.service';
 import { NgxLoadingSpinnerService } from 'ngx-loading-spinner-fork';
 import { Character } from '../core/models/character';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ak-characters',
@@ -11,13 +12,17 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   columnDefinition = ['name', 'height', 'gender'];
 
-  testData;
+  data;
+
+  showError;
 
   private _currentPage;
 
   set currentPage(page: number) {
-    this._currentPage = page;
-    this.loadData();
+    if (this._currentPage !== page) {
+      this._currentPage = page;
+      this.loadData();
+    }
   }
 
   get currentPage() {
@@ -26,7 +31,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   dataSize;
 
-  constructor(private characterService: CharacterService, private spinnerService: NgxLoadingSpinnerService) {
+  constructor(private characterService: CharacterService, private spinnerService: NgxLoadingSpinnerService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -41,16 +46,19 @@ export class CharactersComponent implements OnInit, OnDestroy {
     this.spinnerService.show();
     this.characterService.getPagedCharacters(this.currentPage)
       .subscribe(data => {
-        this.testData = data.results;
+        this.data = data.results;
         this.dataSize = data.count;
         this.spinnerService.hide();
-      });
+      },
+        (err) => {
+          this.showError = true;
+          this.spinnerService.hide();
+        });
   }
 
   characterSelected(character: Character) {
-    this.characterService.getCharacterDetails(character.url).then((data) => {
-      console.log(data.films);
-    });
+    const characterId = character.url ? +character.url.split('/')[5] : null;
+    this.router.navigate(['/people', characterId]);
   }
 
 

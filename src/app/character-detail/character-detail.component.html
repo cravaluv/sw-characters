@@ -1,0 +1,37 @@
+<ngb-alert *ngIf="showError" type="danger" (close)="showError = null">Error when loading data, try again later</ngb-alert>
+<div *ngIf="details">
+  <div class="m-4 card">
+    <h5 class="card-title ml-3 mt-3">
+      <h3>{{ details.character.name }}</h3>
+    </h5>
+    <div class="card-body mx-4">
+      <form [formGroup]="characterForm">
+        <div class="form-group row">
+          <label for="nameInput" class="col-sm-2 col-form-label">Name:</label>
+          <div class="col-sm-6">
+            <input type="text" id="nameInput" class="form-control" formControlName="name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="heightInput" class="col-sm-2 col-form-label">Height:</label>
+          <div class="col-sm-6">
+            <input type="text" id="heightInput" class="form-control" formControlName="height">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="genderInput" class="col-sm-2 col-form-label">Gender:</label>
+          <div class="col-sm-6">
+            <input type="text" id="genderInput" class="form-control" formControlName="gender">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="filmsInput" class="col-sm-2 col-form-label">Films:</label>
+          <div class="col-sm-6">
+            <textarea type="textarea" id="filmsInput" class="form-control"  style="resize: none;" formControlName="films" [rows]="this.details.films.length"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<button type="button" class="m-4 btn btn-outline-dark" (click)="goToCharacters()">Go back</button>

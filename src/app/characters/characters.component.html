@@ -1,4 +1,8 @@
-<div class="m-4" [hidden]="!testData">
-  <ak-data-grid [columns]="columnDefinition" [data]="testData" (doubleClick)="characterSelected($event)"></ak-data-grid>
-  <ngb-pagination class="d-flex justify-content-end" [collectionSize]="dataSize" [(page)]="currentPage"></ngb-pagination>
+<div class="m-4 card" [hidden]="!data">
+  <h5 class="card-title ml-4 mt-3">Star Wars character list</h5>
+  <div class="card-body">
+    <ak-data-grid [columns]="columnDefinition" [data]="data" (doubleClick)="characterSelected($event)"></ak-data-grid>
+    <ak-pagination class="d-flex justify-content-end" [itemsCount]="dataSize" [currentPage]="currentPage" (pageChanged)="currentPage = $event"></ak-pagination>
+  </div>
 </div>
+<ngb-alert *ngIf="showError" type="danger" (close)="showError = null">Error when loading data, try again later</ngb-alert>

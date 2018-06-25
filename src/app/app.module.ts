@@ -10,12 +10,15 @@ import { SharedModule } from './shared/shared.module';
 import { CharactersComponent } from './characters/characters.component';
 import { CharacterDetailComponent } from './character-detail/character-detail.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CharactersComponent,
-    CharacterDetailComponent
+    CharacterDetailComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,8 @@ import { AppRoutingModule } from './app-routing.module';
     SharedModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxLoadingSpinnerModule.forRoot()
+    NgxLoadingSpinnerModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
