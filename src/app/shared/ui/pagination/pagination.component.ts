@@ -5,12 +5,19 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges, SimpleChange
 
   templateUrl: './pagination.component.html'
 })
+
+/**
+ * Custom pagination component
+ */
 export class PaginationComponent implements OnChanges {
 
+  // Size of a single page
   @Input() public pageSize: number;
 
+  // Total items count
   @Input() public itemsCount: number;
 
+  // Actual selected page
   _currentPage = 0;
 
   @Input()
@@ -18,6 +25,7 @@ export class PaginationComponent implements OnChanges {
     return this._currentPage;
   }
 
+  // Emits when current selected page changed
   @Output() pageChanged = new EventEmitter();
 
   set currentPage(val) {
@@ -25,8 +33,13 @@ export class PaginationComponent implements OnChanges {
     this.pageChanged.emit(this._currentPage);
   }
 
-  public totalPages: any = [];
-  public pages: any = [];
+  // Table of all available pages
+  public totalPages: number[] = [];
+
+  // Available pages to select on UI
+  public pages: number[] = [];
+
+  // Range of items that depends on selected page
   public itemsRange = {
     from: 1,
     to: 0
@@ -36,11 +49,17 @@ export class PaginationComponent implements OnChanges {
     this.pageSize = 10;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  /**
+   * Detect changes (selected page) and refresh view with information about items range and page numbers
+   */
+  ngOnChanges(): void {
     this.calculatePageNumbers();
     this.calculateCurrentItemsRange();
   }
 
+  /**
+   * Function that calculates visible page numbers on UI
+   */
   public calculatePageNumbers() {
     const pages = Math.ceil(this.itemsCount / this.pageSize);
     this.totalPages = [];
@@ -56,38 +75,40 @@ export class PaginationComponent implements OnChanges {
     }
   }
 
+  /**
+   * Navigates to selected page
+   * @param pageNo page to navigate
+   */
   public navigateToPage(pageNo: number) {
     this.currentPage = pageNo;
   }
 
-
-  public getNextPagesArrayToDisplay() {
-    let startIndex = this.currentPage - 3 >= 0 ? this.currentPage - 3 : 0;
-    let endIndex = this.currentPage + 2 < 5 ? 5 : this.currentPage + 2;
-    if (endIndex > this.totalPages.length) {
-      endIndex = this.totalPages.length;
-      startIndex =
-        this.totalPages.length - 5 < 0 ? 0 : this.totalPages.length - 5;
-    }
-    this.pages = this.totalPages.slice(startIndex, endIndex);
-  }
-
+  /**
+   * Naviagtes to the next page
+   */
   public nextPage() {
     this.navigateToPage(this.currentPage + 1);
   }
 
+  /**
+   * Navigates to the previous page
+   */
   public previousPage() {
     this.navigateToPage(this.currentPage - 1);
   }
 
+  /**
+   * Calculates items range for UI
+   */
   public calculateCurrentItemsRange() {
+    const pages = Math.ceil(this.itemsCount / this.pageSize);
     if (this.itemsCount === 0) {
       this.itemsRange.to = 0;
       this.itemsRange.from = 0;
       return;
     }
     this.itemsRange.from = this.pageSize * this.currentPage - this.pageSize + 1;
-    if (this.currentPage === this.pages[this.pages.length - 1]) {
+    if (this.currentPage === pages) {
       this.itemsRange.to = this.itemsCount;
       return;
     }

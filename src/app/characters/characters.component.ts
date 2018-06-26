@@ -8,14 +8,22 @@ import { Router } from '@angular/router';
   selector: 'ak-characters',
   templateUrl: './characters.component.html'
 })
+
+/**
+ * Character component that displays paged character in data-grid
+ */
 export class CharactersComponent implements OnInit, OnDestroy {
 
+  // Columns to display in data-grid
   columnDefinition = ['name', 'height', 'gender'];
 
+  // Data to display in data-grid
   data;
 
+  // Flag that informs if error shoud be displayed
   showError;
 
+  // Current selected page
   private _currentPage;
 
   set currentPage(page: number) {
@@ -29,19 +37,29 @@ export class CharactersComponent implements OnInit, OnDestroy {
     return this._currentPage;
   }
 
+  // Size of data displayed in data-grid
   dataSize;
 
   constructor(private characterService: CharacterService, private spinnerService: NgxLoadingSpinnerService, private router: Router) {
   }
 
+  /**
+   * Load last selected page from a service
+   */
   ngOnInit(): void {
     this.currentPage = this.characterService.previousPage;
   }
 
+  /**
+   * Save selected page in a service
+   */
   ngOnDestroy(): void {
     this.characterService.previousPage = this.currentPage;
   }
 
+  /**
+   * Loads paged character data
+   */
   loadData() {
     this.spinnerService.show();
     this.characterService.getPagedCharacters(this.currentPage)
@@ -56,6 +74,10 @@ export class CharactersComponent implements OnInit, OnDestroy {
         });
   }
 
+  /**
+   * On data-grid double click goto detailed character page
+   * @param character character to display
+   */
   characterSelected(character: Character) {
     const characterId = character.url ? +character.url.split('/')[5] : null;
     this.router.navigate(['/people', characterId]);

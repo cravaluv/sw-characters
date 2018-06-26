@@ -6,7 +6,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let character of data" (dblclick)="onDoubleClick(character)" (click)="onClick(character)" [class.table-success]="character === activeCharacter">
-      <th *ngFor="let column of columns">{{character[column]}}</th>
+      <td *ngFor="let column of columns">{{character[column]}}</td>
     </tr>
   </tbody>
 </table>
